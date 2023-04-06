@@ -71,9 +71,9 @@ task3.Name = "Receber DinDin tá difícil";
 task3.Finished = true;
 
 //flur => Put
-await endpoint.PutJsonAsync(task1);
-await endpoint.PutJsonAsync(task2);
-await endpoint.PutJsonAsync(task3);
+await endpoint_update.PutJsonAsync(task1);
+await endpoint_update.PutJsonAsync(task2);
+await endpoint_update.PutJsonAsync(task3);
 
 //read again
 listTasks = (IEnumerable<Item>)await endpoint.GetJsonAsync<Item>();
