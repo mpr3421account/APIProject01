@@ -14,3 +14,5 @@ Console.WriteLine("Hello, World!");
 
 //read one more time
 
+Console.WriteLine("Press any key to start the application");
+Console.Read();
