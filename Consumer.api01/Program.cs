@@ -2,6 +2,7 @@
 using Consumer.api01;
 using Flurl;
 using Flurl.Http;
+using System.Threading.Channels;
 
 Console.WriteLine("Hello, World!");
 
@@ -27,15 +28,19 @@ task3.Finished = false;
 
 
 //add a task by POST request
-string endpoint = url + "api/TaskItems";
+string endpoint = url + "api/TaskItems/";
+
+Console.WriteLine("Incluir: ");
 
 //slow down the request, waiting for API starts
 //Thread.Sleep(new TimeSpan(0,0,30));
 
-//flur
+//flur => post
 await endpoint.PostJsonAsync(task1);
 await endpoint.PostJsonAsync(task2);
 await endpoint.PostJsonAsync(task3);
+
+
 
 //read the tasks list by GET request
 IEnumerable<Item> listTasks = await endpoint.GetJsonAsync<IEnumerable<Item>>();
@@ -46,9 +51,12 @@ foreach(var item in listTasks)
 }
 Console.WriteLine("Vamos alterar: ");
 
-//change by PUT request
 
-endpoint = url + "api/TaskItems/5";
+
+//change by PUT request
+Console.WriteLine("Input the ID to update: ");
+int id = int.Parse(Console.ReadLine());
+string endpoint_update = url + $"api/TaskItems/{id}";
 
 task1.Id = 1;
 task1.Name = "Pagar Conta porra nenhuma";
@@ -62,8 +70,13 @@ task3.Id = 3;
 task3.Name = "Receber DinDin tá difícil";
 task3.Finished = true;
 
+//flur => Put
+await endpoint.PutJsonAsync(task1);
+await endpoint.PutJsonAsync(task2);
+await endpoint.PutJsonAsync(task3);
+
 //read again
-listTasks = await endpoint.GetJsonAsync<IEnumerable<Item>>();
+listTasks = (IEnumerable<Item>)await endpoint.GetJsonAsync<Item>();
 
 foreach (var item in listTasks)
 {
