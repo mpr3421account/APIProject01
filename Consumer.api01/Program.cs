@@ -79,6 +79,16 @@ Console.WriteLine("Vamos deletar: ");
 
 
 //delete by DELETE request
+string endpoint_delete = url + $"api/TaskItems/3";
+await endpoint_delete.DeleteAsync();
+
 
 //read one more time
 
+listTasks = await endpoint.GetJsonAsync<IEnumerable<Item>>();
+
+foreach (var item in listTasks)
+{
+    Console.WriteLine($"The task {item.Name} is {item.Finished}");
+}
+Console.WriteLine("Vamos Parar aqui");
