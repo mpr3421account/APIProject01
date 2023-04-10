@@ -4,7 +4,8 @@ using Flurl;
 using Flurl.Http;
 using System.Threading.Channels;
 
-Console.WriteLine("Hello, World!");
+Console.WriteLine("Starting application");
+//Console.Read();
 
 string url = "https://localhost:44390/";
 
@@ -30,7 +31,7 @@ task3.Finished = false;
 //add a task by POST request
 string endpoint = url + "api/TaskItems/";
 
-Console.WriteLine("Incluir: ");
+Console.WriteLine("Adding Tasks: ");
 
 //slow down the request, waiting for API starts
 //Thread.Sleep(new TimeSpan(0,0,30));
@@ -49,34 +50,26 @@ foreach(var item in listTasks)
 {
     Console.WriteLine($"The task {item.Name} is {item.Finished}");
 }
-Console.WriteLine("Vamos alterar: ");
 
 
 
 //change by PUT request
+Console.WriteLine("Lets Update: ");
 Console.WriteLine("Input the ID to update: ");
-int id = int.Parse(Console.ReadLine());
+
+int id = Convert.ToInt32(Console.ReadLine());
 string endpoint_update = url + $"api/TaskItems/{id}";
 
-task1.Id = 1;
-task1.Name = "Pagar Conta porra nenhuma";
-task1.Finished = false;
+Item task4 = new Item();
+task4.Id = (1);
+task4.Name = "Updated";
+task4.Finished = true;
 
-task2.Id = 2;
-task2.Name = "Negar Conta é meu sonho";
-task2.Finished = false;
-
-task3.Id = 3;
-task3.Name = "Receber DinDin tá difícil";
-task3.Finished = true;
-
-//flur => Put
-await endpoint_update.PutJsonAsync(task1);
-await endpoint_update.PutJsonAsync(task2);
-await endpoint_update.PutJsonAsync(task3);
+await endpoint_update.PutJsonAsync(task4);
+Console.WriteLine($"Task id {id} was updated successfuly");
 
 //read again
-listTasks = (IEnumerable<Item>)await endpoint.GetJsonAsync<Item>();
+listTasks = await endpoint.GetJsonAsync<IEnumerable<Item>>();
 
 foreach (var item in listTasks)
 {
@@ -89,5 +82,3 @@ Console.WriteLine("Vamos deletar: ");
 
 //read one more time
 
-Console.WriteLine("Press any key to start the application");
-Console.Read();
